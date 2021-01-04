@@ -16,3 +16,15 @@ Basically we want to get a state object out of the database and then set up a st
 
     // since we're persisting the state of a payment through a state machine, we're basically checking the
     // state of the State Machine in and out of the database at each step/state change
+    
+<br><br>
+
+John Thompson's comments on how he sees State Machines being implemented with **Event Sourcing** Blockchain and databases.
+Summary:
+
+with blockchain, and state changes of a state machine would be stored and permanent  
+whereas on a relational database - the various states and transactions stored in the DB could be altered, dropped, or 
+not recorded in the first place  
+
+an example would be a credit approval process - every step, state change and transaction - with blockchain - would be
+kept and unalterable ( could argue same for a voting software system)
