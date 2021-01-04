@@ -5,6 +5,7 @@ import com.kwgdev.msscspringstatemachine.domain.PaymentEvent;
 import com.kwgdev.msscspringstatemachine.domain.PaymentState;
 import com.kwgdev.msscspringstatemachine.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +36,7 @@ class PaymentServiceImplTest {
     }
 
     @Transactional
-    @Test
+    @RepeatedTest(10)
     void preAuth() {
         Payment savedPayment = paymentService.newPayment(payment);
 
@@ -49,7 +50,7 @@ class PaymentServiceImplTest {
         Payment preAuthedPayment = paymentRepository.getOne(savedPayment.getId());
 
         // in Test results we are expected a state of PRE_AUTH
-        System.out.println("State should be PRE_AUTH");
+        System.out.println("State should be PRE_AUTH if approved or PRE_AUTH_ERROR if declined");
         System.out.println(sm.getState().toString());
 
         // if we were doing a real test we would do some assertions first

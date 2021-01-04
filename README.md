@@ -1,10 +1,10 @@
 # Demo Project for Spring State Machine
 
 So our case setup in this scenario is we're running some microservices and we need to persist the state of the state machine to the database
-and the rehydrate it, reset the state, from the object in the database.
+and then rehydrate it - reset the state - from the object in the database.
 
 This type of case where we have separate processes running and they'll be running over time. So there will be time in between 
-the **Pre-Authorization** and the **Authorization** of a payment. So thats a use case and it could be 1 minute, 1 hour, etc.
+the **Pre-Authorization State** and the **Authorization State** of a payment. So thats a use case and it could be 1 minute, 1 hour, etc.
 
 We want to bring that state machine back out of the database and rehyrdrate it to the propert state.
 

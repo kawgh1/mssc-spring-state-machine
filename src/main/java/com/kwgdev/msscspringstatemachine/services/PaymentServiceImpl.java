@@ -4,6 +4,7 @@ import com.kwgdev.msscspringstatemachine.domain.Payment;
 import com.kwgdev.msscspringstatemachine.domain.PaymentEvent;
 import com.kwgdev.msscspringstatemachine.domain.PaymentState;
 import com.kwgdev.msscspringstatemachine.repository.PaymentRepository;
+import com.kwgdev.msscspringstatemachine.services.PaymentStateChangeInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -38,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         StateMachine<PaymentState, PaymentEvent> sm = build(paymentId);
 
-        sendEvent(paymentId, sm, PaymentEvent.PRE_AUTH_APPROVED);
+        sendEvent(paymentId, sm, PaymentEvent.PRE_AUTHORIZE);
 
         return sm;
     }
