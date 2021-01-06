@@ -200,12 +200,12 @@ kept and unalterable ( could argue same for a voting software system)
             - **Choreography** - Distributed Decision Making - each actor / node decides the next steps
             - **Orchestration** - Centralized Decision Making - Central component decices next steps
             
-        - Choreography
+        - ## Choreography
             - Distributed Decision Making
-            - Benefits
+            - ### Benefits
                 - Simple, loosely coupled
                 - Good for simpler sagas
-            - Problems
+            - ### Problems
                 - Cyclic dependencies
                 - Harder to understand, logic is spread out
                 - Components are more complex
@@ -216,12 +216,12 @@ kept and unalterable ( could argue same for a voting software system)
             - Each actor needs ot know how to perform a compensating transaction
                 - Thus each actor has more coupling to other system components
                 
-        - Orchestration
+        - ## Orchestration
             - Centralized Decision Making
-            - Benefits
+            - ### Benefits
                 - Logic is centralized and easier to understand
                 - Reduced coupling, better separation of concerns
-            - Problems
+            - ### Problems
                 - Risks of over-centralization - need to maintain focus on separation of concerns
                 - Single Point of Failure
             - Implemented as a central component directing other actors / services
@@ -273,18 +273,18 @@ kept and unalterable ( could argue same for a voting software system)
         
         - ## Saga Execution Coordinator
             - Implements using Spring State Machine
-                - **Events** 
-                    - VALIDATE_ORDER - (VALIDATION_PASSED, VALIDATION_FAILED)
-                    - ALLOCATION_SUCCESS, ALLOCATION_NO_INVENTORY, ALLOCATION_FAILED
-                    - BEER_ORDER_PICKED_UP or CANCEL_ORDER
+                - ### **Events** 
+                    - **VALIDATE_ORDER - (VALIDATION_PASSED, VALIDATION_FAILED)**
+                    - **ALLOCATION_SUCCESS, ALLOCATION_NO_INVENTORY, ALLOCATION_FAILED**
+                    - **BEER_ORDER_PICKED_UP or CANCEL_ORDER**
                 
-                - **States**
-                    - NEW
-                    - VALIDATED, VALIDATED_EXCEPTION
-                    - ALLOCATED, ALLOCATION_ERROR
-                    - PENDING_INVENTORY
-                    - PICKED_UP, DELIVERED, DELIVERY EXCEPTION
-                    - CANCELED
+                - ### **States**
+                    - **NEW**
+                    - **VALIDATED, VALIDATED_EXCEPTION**
+                    - **ALLOCATED, ALLOCATION_ERROR**
+                    - **PENDING_INVENTORY**
+                    - **PICKED_UP, DELIVERED, DELIVERY EXCEPTION**
+                    - **CANCELED**
 
 
 
