@@ -29,7 +29,7 @@ not recorded in the first place
 an example would be a credit approval process - every step, state change and transaction - with blockchain - would be
 kept and unalterable ( could argue same for a voting software system)  
 
-# [Sagas](#Introducing-Sagas)
+# [Introducing Sagas](#introducing-sagas)
   
 - # The Problem with Transactions
     - A database transaction allows you to have a sequence of steps
@@ -130,7 +130,7 @@ kept and unalterable ( could argue same for a voting software system)
             - Not available within a distributed system
             - Thus up to the application to enforce constraints
             
-# [Introducing Sagas](#Sagas)
+# [Introducing Sagas](#introducing-sagas)
 
 - 
     - Concept introduced in 1987 by Gracia-Molina / Salem of Princeton Univ
