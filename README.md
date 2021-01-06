@@ -89,7 +89,7 @@ kept and unalterable ( could argue same for a voting software system)
                     - Services can be in Java, .NET, Ruby, etc.
                 - How to coordinate the 'Transaction' across multiple microservices??
                 
-[Top](#top)
+### [Top](#top)
                 
 - # The Need for Sagas
   
@@ -131,6 +131,8 @@ kept and unalterable ( could argue same for a voting software system)
             - Relational Databases can enforce a variety of constraints - such as foreign key constraints
             - Not available within a distributed system
             - Thus up to the application to enforce constraints
+           
+### [Top](#top)
             
 # Introducing Sagas
 
@@ -160,7 +162,135 @@ kept and unalterable ( could argue same for a voting software system)
         
     - ## Compensating Transactions
         - Effectively become the 'Feral Concurrency Control'
+        - Are the mechanism used to maintain system integrity
+        - Should also be idempotent
+        - Cannot abort a transaction - need to ensure proper formation and execution
+        - Not the same as a 'rollback' to the exact previous state
+            - Implements business logic for a failure event
+            
+        - Sagas are 'ACD'
+            - **A - Atomic** - All transactions are executed or compensated
+            - **C - Consistency**
+                - Referential integrity within a service by the local database
+                - Referential integrity across services by the application - 'Feral Concurrency Control'
+            - **D - Durability**
+                - Persisted by database of each microservice
+                
+        - **BASE** = **B**asically **A**vailable, **S**oft State, **E**ventually consistent
+            - During execution of the Saga, the system is in the 'Soft State'
+            - Eventually consistent - meaning system will be consistent at the conclusion of the Saga
+                - Consistency achieved via normal completion of the Saga
+                - In the event of an error, consistency is achieved via compensating transactions
+                
+    ## - Summary
+       - **Saga Definition** - A long, involved story, account or series of incidents
+       - Microservices by nature run in a distributed environment, across many computers
+       - Sagas are used to address the challeneges faced when operating in a distributed environment
+       - Sagas are a tool used to coordinate a series of steps for a business transaction across multiple services
+       - Sagas not only prescribe the series of necessary steps, they also maintain system intergrity
+       
+### [Top](#top) 
          
+- # Saga Coordination
+    - **Saga Definition** - A long, involved story, account or series of incidents
+        - Saga - series of steps
+        - With compensating transactions
+    - How to define a saga in a distributed environment?
+        - Two primary approaches for Saga Coordination
+            - **Choreography** - Distributed Decision Making - each actor / node decides the next steps
+            - **Orchestration** - Centralized Decision Making - Central component decices next steps
+            
+        - Choreography
+            - Distributed Decision Making
+            - Benefits
+                - Simple, loosely coupled
+                - Good for simpler sagas
+            - Problems
+                - Cyclic dependencies
+                - Harder to understand, logic is spread out
+                - Components are more complex
+                
+            - Implemented using Events
+            - Each actor emits an event for the next step in the Saga (business logic)
+            - Requires each actor have logic about the saga
+            - Each actor needs ot know how to perform a compensating transaction
+                - Thus each actor has more coupling to other system components
+                
+        - Orchestration
+            - Centralized Decision Making
+            - Benefits
+                - Logic is centralized and easier to understand
+                - Reduced coupling, better separation of concerns
+            - Problems
+                - Risks of over-centralization - need to maintain focus on separation of concerns
+                - Single Point of Failure
+            - Implemented as a central component directing other actors / services
+            - Central component maintains **state** of the Saga
+                - State Machine
+                - Saga Execution Coordinator (SEC)
+                - Event Sourcing
+            - Must take responsibility for the completion of the Saga
+                - ie, persist to DB, user persistent message queues, etc.
+                
+    ## - Which to use?
+        - Choregraphy for smaller, simpler Sagas
+        - Orchestration for larger, more complex Sagas
+          
+        - How to implement?
+            - Typically a custom solution - wide variety of implementations
+            - Open Source / Commercial solutions are emerging
+                - still faily early and are maturing
         
                 
-[Top](#top)
+### [Top](#top)
+
+# - Order Allocation Saga (example)
+   - Order Allocation is the process of assigning inventory to an order
+   - Order Allocation Steps:
+        - Validate Order
+        - Allocate Inventory
+        - Update Order with result of Allocation
+        - Order Delivered
+        
+   - # Order Allocation in Beer Services
+        - Order Allocation Steps:
+            - **Validate Order** - Call **Beer Service**, validate beers ordered
+            - **Allocate Inventory** - **Inventory Service** checks for available inventory
+            - **Update Order with Result of Allocation** - Receive Allocation Action
+            - **Order Delivered** - Order status changed to completed
+   - Order Cancellation
+        - Order Cancellation Can Happen Until Delivery
+        - Order Cancellation Steps:
+            - Update Order Status to Cancelled
+            - If allocated, Release inventory
+            
+   - # Orchestration Saga is best fit for this scenario
+        - Need Saga Coordinator for Order Allocation
+        - Will sequence steps of Microservices to perform Order Allocation
+        - Accommodate 'happy path' of Order Allocation
+        - Apply compensating transactions if there are errors
+        - Handle Order Cancellation, as needed
+        
+        - ## Saga Execution Coordinator
+            - Implements using Spring State Machine
+                - **Events** 
+                    - VALIDATE_ORDER - (VALIDATION_PASSED, VALIDATION_FAILED)
+                    - ALLOCATION_SUCCESS, ALLOCATION_NO_INVENTORY, ALLOCATION_FAILED
+                    - BEER_ORDER_PICKED_UP or CANCEL_ORDER
+                
+                - **States**
+                    - NEW
+                    - VALIDATED, VALIDATED_EXCEPTION
+                    - ALLOCATED, ALLOCATION_ERROR
+                    - PENDING_INVENTORY
+                    - PICKED_UP, DELIVERED, DELIVERY EXCEPTION
+                    - CANCELED
+
+
+
+
+
+
+
+
+### [Top](#top)
