@@ -31,18 +31,18 @@ kept and unalterable ( could argue same for a voting software system)
 
   
   
-- The Problem with Transactions
+- ### The Problem with Transactions
     - A database transaction allows you to have a sequence of steps
         - All steps must complete ot be committed
         - Else, a rollback occurs returning the database to the original state
         
-    - The Order Allocation Scenario
+    - #### The Order Allocation Scenario
         - Allocate Inventory - Updating Inventory and Order with Allocation
         - Works well within a monolith
         - Order and Inventory are two different Microservices/Databases
         - Breaks traditional transactions
         
-    - A.C.I.D. Transactions
+    - #### A.C.I.D. Transactions
         - ACID - Typically one database
             - **Atomicity** - All operations are completed successfully or database is returned to previous state
             - **Consistency** - Operations do not violate system integrity constraints
@@ -52,11 +52,11 @@ kept and unalterable ( could argue same for a voting software system)
         - Database handles all locking and coordination to guarantee transaction
             - This is **expensive** to do - takes a lot of system resources
             
-    - Distributed Transactions
+    - #### Distributed Transactions
         - When we start talking about **microservices**, obviously those transactions will be going out across potentially many, many nodes
         - With **microservices**, often multiple services are involved in what is considered a transaction
             - Order Allocation example - Order Service, Inventory Service, etc.
-        - Java EE - Java Transaction API (JTA)
+        - #### Java EE - Java Transaction API (JTA)
             - Enables distributed transactions for Java environments
             - Well supported by Spring
             - Transactions are managed across nodes by a **Transaction Manager**
@@ -89,9 +89,9 @@ kept and unalterable ( could argue same for a voting software system)
                     - Services can be in Java, .NET, Ruby, etc.
                 - How to coordinate the 'Transaction' across multiple microservices??
                 
-- The Need for Sagas
+- ### The Need for Sagas
   
-    - The Microservice Death Star
+    - #### The Microservice Death Star
         - As the number of microservices grows, so does complexity at a much faster rate
         - Death Star examples
             - Netflix
@@ -106,14 +106,14 @@ kept and unalterable ( could argue same for a voting software system)
         - Microservices should be technology agnostic
             - Making 2PC even more difficult to implement
             
-    - CAP Theorem
+    - #### CAP Theorem
         - **CAP** - Consistency, Availability, Partition Tolerance
             - **Consistency** - Every read will have the most recent write
             - **Availability** - Each read will get a response, but without the guaranatee data is most recent write
             - **Partition Tolerance** - System continues in lieu of communications errors or delays
         - **CAP Theorem** - States that a distributed system can only maintain two of these three at a time
         
-    - BASE - An ACID Alternative
+    - #### BASE - An ACID Alternative
         - **BASE** - Coined by Dan Pritchett of Ebay in 2008
         - **B**asically **A**vailable, **S**oft State, **E**ventually consistent
             - The opposite of ACID
