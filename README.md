@@ -130,7 +130,7 @@ kept and unalterable ( could argue same for a voting software system)
             - Not available within a distributed system
             - Thus up to the application to enforce constraints
             
-# [Introducing Sagas](#introducing-sagas)
+# Introducing Sagas
 
 - 
     - Concept introduced in 1987 by Gracia-Molina / Salem of Princeton Univ
@@ -161,4 +161,4 @@ kept and unalterable ( could argue same for a voting software system)
          
         
                 
-            
+[Top](#top)
