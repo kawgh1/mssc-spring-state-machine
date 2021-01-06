@@ -29,7 +29,7 @@ not recorded in the first place
 an example would be a credit approval process - every step, state change and transaction - with blockchain - would be
 kept and unalterable ( could argue same for a voting software system)  
 
-# [Introducing Sagas](#introducing-sagas)
+# [Sagas](#introducing-sagas)
   
 - # The Problem with Transactions
     - A database transaction allows you to have a sequence of steps
@@ -88,6 +88,8 @@ kept and unalterable ( could argue same for a voting software system)
                 - Should be technology agnostic
                     - Services can be in Java, .NET, Ruby, etc.
                 - How to coordinate the 'Transaction' across multiple microservices??
+                
+[Top](#top)
                 
 - # The Need for Sagas
   
