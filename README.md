@@ -201,7 +201,7 @@ kept and unalterable ( could argue same for a voting software system)
             - **Orchestration** - Centralized Decision Making - Central component decices next steps
             
         - ## Choreography
-            - Distributed Decision Making
+            - ## Distributed Decision Making
             - ### Benefits
                 - Simple, loosely coupled
                 - Good for simpler sagas
@@ -217,7 +217,7 @@ kept and unalterable ( could argue same for a voting software system)
                 - Thus each actor has more coupling to other system components
                 
         - ## Orchestration
-            - Centralized Decision Making
+            - ## Centralized Decision Making
             - ### Benefits
                 - Logic is centralized and easier to understand
                 - Reduced coupling, better separation of concerns
@@ -233,13 +233,13 @@ kept and unalterable ( could argue same for a voting software system)
                 - ie, persist to DB, user persistent message queues, etc.
                 
     ## - Which to use?
-        - Choregraphy for smaller, simpler Sagas
-        - Orchestration for larger, more complex Sagas
+            - **Choregraphy for smaller, simpler Sagas**
+            - **Orchestration for larger, more complex Sagas**
           
-        - How to implement?
-            - Typically a custom solution - wide variety of implementations
-            - Open Source / Commercial solutions are emerging
-                - still faily early and are maturing
+            - How to implement?
+                - Typically a custom solution - wide variety of implementations
+                - Open Source / Commercial solutions are emerging
+                    - still faily early and are maturing
         
                 
 ### [Top](#top)
@@ -258,11 +258,11 @@ kept and unalterable ( could argue same for a voting software system)
             - **Allocate Inventory** - **Inventory Service** checks for available inventory
             - **Update Order with Result of Allocation** - Receive Allocation Action
             - **Order Delivered** - Order status changed to completed
-   - Order Cancellation
-        - Order Cancellation Can Happen Until Delivery
-        - Order Cancellation Steps:
-            - Update Order Status to Cancelled
-            - If allocated, Release inventory
+       - Order Cancellation
+            - Order Cancellation Can Happen Until Delivery
+            - Order Cancellation Steps:
+                - Update Order Status to Cancelled
+                - If allocated, Release inventory
             
    - # Orchestration Saga is best fit for this scenario
         - Need Saga Coordinator for Order Allocation
@@ -271,14 +271,14 @@ kept and unalterable ( could argue same for a voting software system)
         - Apply compensating transactions if there are errors
         - Handle Order Cancellation, as needed
         
-        - ## Saga Execution Coordinator
+        - # Saga Execution Coordinator
             - Implements using Spring State Machine
-                - ### **Events** 
+                - ## **Events** 
                     - **VALIDATE_ORDER - (VALIDATION_PASSED, VALIDATION_FAILED)**
                     - **ALLOCATION_SUCCESS, ALLOCATION_NO_INVENTORY, ALLOCATION_FAILED**
                     - **BEER_ORDER_PICKED_UP or CANCEL_ORDER**
                 
-                - ### **States**
+                - ## **States**
                     - **NEW**
                     - **VALIDATED, VALIDATED_EXCEPTION**
                     - **ALLOCATED, ALLOCATION_ERROR**
