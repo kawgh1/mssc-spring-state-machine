@@ -27,4 +27,101 @@ whereas on a relational database - the various states and transactions stored in
 not recorded in the first place  
 
 an example would be a credit approval process - every step, state change and transaction - with blockchain - would be
-kept and unalterable ( could argue same for a voting software system)
+kept and unalterable ( could argue same for a voting software system)  
+
+  
+  
+- The Problem with Transactions
+    - A database transaction allows you to have a sequence of steps
+        - All steps must complete ot be committed
+        - Else, a rollback occurs returning the database to the original state
+        
+    - The Order Allocation Scenario
+        - Allocate Inventory - Updating Inventory and Order with Allocation
+        - Works well within a monolith
+        - Order and Inventory are two different Microservices/Databases
+        - Breaks traditional transactions
+        
+    - A.C.I.D. Transactions
+        - ACID - Typically one database
+            - **Atomicity** - All operations are completed successfully or database is returned to previous state
+            - **Consistency** - Operations do not violate system integrity constraints
+            - **Isolated** - Results are independent of concurrent transactions 
+                - ie imagine 1000s of database transactions at one time, you want to guarantee your data is not unexpectedly changing mid-transaction
+            - **Durable** - Results are made persistent in case of system failure (ie written to disk)
+        - Database handles all locking and coordination to guarantee transaction
+            - This is **expensive** to do - takes a lot of system resources
+            
+    - Distributed Transactions
+        - When we start talking about **microservices**, obviously those transactions will be going out across potentially many, many nodes
+        - With **microservices**, often multiple services are involved in what is considered a transaction
+            - Order Allocation example - Order Service, Inventory Service, etc.
+        - Java EE - Java Transaction API (JTA)
+            - Enables distributed transactions for Java environments
+            - Well supported by Spring
+            - Transactions are managed across nodes by a **Transaction Manager**
+            - Very Java centric
+                - JTA sounds nice on paper, but in production it can become a headache very quickly
+                
+        - JTA uses a **Two-Phase Commit** or **2PC**
+            - Happens in two phases - **Voting** and **Commit**
+            - Transaction Coordinator asks each node if proposed transaction is ok?
+                - If ***all*** respond ok:
+                    - Commit message is sent
+                    - Each Node commits work and sends acknowledgements to coordinator
+                - If ***any*** Node responds **no**:
+                    - Rollback message is sent
+                    - Each node rollsback and sends acknowledgement to coordinator
+                      
+            - Problems with Two Phase Commit
+                - Does not scale - expensive
+                - Blocking Protocol - the various steps block and wait for others to complete
+                - Performance is limited to the speed of the slowest Node
+                -  Coordinator is a Single Point of Failure
+                - Technology lock-in
+                    - Can be very difficult to mix technology stacks
+                    
+            - Challenges with Microservices
+                - A transaction for a Microservice architecture will often span multiple microservices
+                - Each service should have its own database
+                    - Could be a mix of SQL and NoSQL databases
+                - Should be technology agnostic
+                    - Services can be in Java, .NET, Ruby, etc.
+                - How to coordinate the 'Transaction' across multiple microservices??
+                
+- The Need for Sagas
+  
+    - The Microservice Death Star
+        - As the number of microservices grows, so does complexity at a much faster rate
+        - Death Star examples
+            - Netflix
+            - Twitter
+            - Uber
+            
+    - Challenges
+        - Business transactions often span multiple microservices
+        - ACID transactions are not an option between microservices
+        - Distributed Transactions / Two Phase Commits
+            - Complex and do not scale
+        - Microservices should be technology agnostic
+            - Making 2PC even more difficult to implement
+            
+    - CAP Theorem
+        - **CAP** - Consistency, Availability, Partition Tolerance
+            - **Consistency** - Every read will have the most recent write
+            - **Availability** - Each read will get a response, but without the guaranatee data is most recent write
+            - **Partition Tolerance** - System continues in lieu of communications errors or delays
+        - **CAP Theorem** - States that a distributed system can only maintain two of these three at a time
+        
+    - BASE - An ACID Alternative
+        - **BASE** - Coined by Dan Pritchett of Ebay in 2008
+        - **B**asically **A**vailable, **S**oft State, **E**ventually consistent
+            - The opposite of ACID
+            - **Basically Available** - Build system to support partial failures
+                - Loss of some functionality vs total system loss
+            - **Soft State** - Transactions cascade across nodes, it can inconsistent for a period of time
+            - **Eventually Consistent** - When processing is complete, system will be consistent
+                
+        
+                
+            
