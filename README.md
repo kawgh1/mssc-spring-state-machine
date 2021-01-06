@@ -29,7 +29,7 @@ not recorded in the first place
 an example would be a credit approval process - every step, state change and transaction - with blockchain - would be
 kept and unalterable ( could argue same for a voting software system)  
 
-  
+- #[Sagas](#the-need-for-sagas)
   
 - # The Problem with Transactions
     - A database transaction allows you to have a sequence of steps
@@ -121,7 +121,42 @@ kept and unalterable ( could argue same for a voting software system)
                 - Loss of some functionality vs total system loss
             - **Soft State** - Transactions cascade across nodes, it can inconsistent for a period of time
             - **Eventually Consistent** - When processing is complete, system will be consistent
-                
+            
+    - ### Feral Concurrency Control
+        - *Feral Concurrency Control: An Empirical Investigation of Modern Application Integrity*
+           - Published by Peter Baillis in 2015
+        - **Feral Concurrency Control - are application level mechanisms for maintaining database integrity**
+            - Relational Databases can enforce a variety of constraints - such as foreign key constraints
+            - Not available within a distributed system
+            - Thus up to the application to enforce constraints
+            
+- # [Introducing Sagas](#the-need-for-sagas)
+    - Concept introduced in 1987 by Gracia-Molina / Salem of Princeton Univ
+    - Was originally looking at Long Lived Transactions (LLTs) within a single database
+        - LLTs hold on to database resources for an extended period of time
+    - Paper proposed rather than long complex processes to break up into smaller atomic transactions
+    - Introduced concept of compensating transactions to correct partial executions
+    
+    - ## Sagas
+        - Sagas are simply a series of steps to complete a business process
+        - Sagas coordinate the invocation of microservices via messages or requests
+        - Sagas become the transactional model
+        - Each step of the Saga can be considered a request
+        - Each step of the Saga has a compensating transaction (request)
+            - Semantically undoes the effect of the request
+            - Might not restore to the exact previous state - but effectively the same
+            
+    - ## Saga Steps
+        - Each step should be a message or event to be consumed by a microservice
+        - **Steps are asynchronous**
+        - Within a microservice, it's normal to use traditional database transactions
+        - Each message (request) should be idempotent
+            - meaning if same message / event is sent (re-delivered), there is no adverse effect on system state
+        - Each step has a compensating transaction to undo the actions
+        
+    - ## Compensating Transactions
+        - Effectively become the 'Feral Concurrency Control'
+         
         
                 
             
