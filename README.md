@@ -200,7 +200,7 @@ kept and unalterable ( could argue same for a voting software system)
             - **Choreography** - Distributed Decision Making - each actor / node decides the next steps
             - **Orchestration** - Centralized Decision Making - Central component decices next steps
             
-        - ## Choreography
+        - # Choreography
             - ## Distributed Decision Making
             - ### Benefits
                 - Simple, loosely coupled
@@ -216,7 +216,7 @@ kept and unalterable ( could argue same for a voting software system)
             - Each actor needs ot know how to perform a compensating transaction
                 - Thus each actor has more coupling to other system components
                 
-        - ## Orchestration
+        - # Orchestration
             - ## Centralized Decision Making
             - ### Benefits
                 - Logic is centralized and easier to understand
